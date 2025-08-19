@@ -1,0 +1,6 @@
+Name,Roll,department,Time,Last Attendance,
+Alice,101,CS,09:00 AM,Yesterday 09:00 AM,Present
+Bob,102,ME,09:05 AM,Yesterday 09:05 AM,Absent
+Charlie,103,CS,08:55 AM,Yesterday 08:55 AM,Present
+David,104,EC,09:10 AM,Yesterday 09:10 AM,Absent
+

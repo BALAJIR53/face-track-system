@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Attendance History</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        h2 {
+            margin-top: 40px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h1>Attendance History</h1>
+
+{% if dept_records %}
+    {% for department, records in dept_records.items() %}
+    <h2>Department: {{ department }}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Roll</th>
+                <th>Time</th>
+                <th>Last Attendance Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.Date }}</td>
+                <td>{{ record.Name }}</td>
+                <td>{{ record.Roll }}</td>
+                <td>{{ record.Time }}</td>
+                <td>{{ record.LastAttendanceTime }}</td>
+                <td>{{ record.Status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endfor %}
+
+    <h2>Attendance Summary by Department</h2>
+    <canvas id="attendanceChart" width="600" height="400"></canvas>
+
+    <script>
+        const ctx = document.getElementById('attendanceChart').getContext('2d');
+        const labels = {{ chart_labels|tojson }};
+        const values = {{ chart_values|tojson }};
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Number of Present Students',
+                data: values,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        precision: 0
+                    }
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+
+{% else %}
+    <p>No attendance records found.</p>
+{% endif %}
+<p>Labels: {{ chart_labels }}</p>
+<p>Values: {{ chart_values }}</p>
+
+
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Approval</title>
+    <style>
+        /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .reject-button {
+            background-color: #dc3545;
+        }
+
+        .reject-button:hover {
+            background-color: #c82333;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        input[type="text"] {
+            width: 90%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .select-all {
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .message {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .error {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .back-button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Pending Attendance Approvals</h1>
+
+        <!-- Flash Message Display -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div>
+            {% for category, message in messages %}
+            <div class="message {{ 'success' if category == 'success' else 'error' }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <!-- Display pending count -->
+        <p><strong>Total Pending Approvals: {{ pending_count }}</strong></p>
+
+        <!-- Select All Option -->
+        <div class="select-all">
+            <input type="checkbox" id="selectAll" aria-label="Select all attendance records" /> Select All
+        </div>
+
+        <form method="POST">
+            {% if csrf_token %}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            {% endif %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>Name</th>
+                        <th>Roll</th>
+                        <th>Department</th>
+                        <th>Time</th>
+                        <th>Last Attendance Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in pending_attendance %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="attendance[]" value="{{ record['Roll'] }}" aria-label="Select {{ record['Name'] }}" />
+                        </td>
+                        <td>{{ record['Name'] }}</td>
+                        <td>{{ record['Roll'] }}</td>
+                        <td>
+                            <input type="text" name="department_{{ record['Roll'] }}" value="{{ record['Department'] or '' }}" required />
+                        </td>
+                        <td>{{ record['Time'] }}</td>
+                        <td>{{ record['LastAttendanceTime'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" name="action" value="approve" onclick="return confirmApproval()">Approve Selected</button>
+            <button type="submit" name="action" value="reject" class="reject-button" onclick="return confirmRejection()">Reject Selected</button>
+        </form>
+
+        <!-- Back to Home Button -->
+        <button id="backToHome" class="back-button">Back to Home</button>
+    </div>
+
+    <script>
+        // Confirmation before approval
+        function confirmApproval() {
+            return confirm('Are you sure you want to approve the selected attendance?');
+        }
+
+        // Confirmation before rejection
+        function confirmRejection() {
+            return confirm('Are you sure you want to reject the selected attendance?');
+        }
+
+        // Select/Deselect All checkboxes except the selectAll checkbox itself
+        document.getElementById('selectAll').addEventListener('change', function () {
+            let checkboxes = document.querySelectorAll('input[type="checkbox"][name="attendance[]"]');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = document.getElementById('selectAll').checked;
+            });
+        });
+
+        // Back to Home button functionality
+        document.getElementById('backToHome').addEventListener('click', function () {
+            window.location.href = '/home'; // Change to your actual home URL
+        });
+    </script>
+</body>
+
+</html>
