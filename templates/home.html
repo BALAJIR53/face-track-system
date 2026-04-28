@@ -9,168 +9,145 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Source+Sans+Pro:wght@300&display=swap"
+ 
         rel="stylesheet">
+<style>
+   *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            font-family: 'Source Sans Pro', sans-serif;
-        }
+/* Animated gradient background */
+body{
+    background:linear-gradient(-45deg,#021774,#1c07e1,#0b0796,#050bb3);
+    background-size:400% 400%;
+    animation:gradientMove 12s ease infinite;
+    padding:30px;
+}
 
-        body {
-            background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
-            font-family: 'Roboto', sans-serif;
-            margin-top: 40px;
-            animation: fadeIn 1.2s ease-out;
-        }
+/* Background animation */
+@keyframes gradientMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
 
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
+/* Header */
+.header{
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(12px);
+    color:white;
+    padding:25px;
+    font-size:40px;
+    text-align:center;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    margin-bottom:30px;
+    animation:fadeDown 1s ease;
+}
 
-            100% {
-                opacity: 1;
-            }
-        }
+@keyframes fadeDown{
+    from{opacity:0; transform:translateY(-30px);}
+    to{opacity:1; transform:translateY(0);}
+}
 
-        .header {
-            background-color: #4c67db;
-            color: white;
-            padding: 20px;
-            font-size: 50px;
-            text-align: center;
-            margin-top: 50px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
+/* Layout */
+.section,
+.approval-section{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+    margin:30px 0;
+}
 
-        .section,
-        .approval-section {
-            display: flex;
-            justify-content: space-between;
-            margin: 40px;
-            flex-wrap: wrap;
-        }
+/* Card style */
+.col{
+    background:rgba(255,255,255,0.2);
+    backdrop-filter:blur(15px);
+    border-radius:20px;
+    padding:25px;
+    min-height:320px;
+    box-shadow:0 10px 35px rgba(0,0,0,0.2);
+    transition:all 0.3s ease;
+    animation:fadeUp 0.8s ease;
+}
 
-        .col {
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            margin: 10px;
-            min-height: 400px;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-            flex: 1 1 300px;
-        }
+.col:hover{
+    transform:translateY(-10px) scale(1.02);
+    box-shadow:0 15px 45px rgba(0,0,0,0.35);
+}
 
-        .col h2 {
-            background-color: #4c67db;
-            color: white;
-            padding: 12px;
-            border-radius: 10px 10px 0px 0px;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1; transform:translateY(0);}
+}
 
-        .approval-section .btn-approve,
-        .btn {
-            background-color: #4c67db;
-            color: white;
-            padding: 12px;
-            width: 100%;
-            border-radius: 8px;
-            cursor: pointer;
-            border: none;
-            font-size: 16px;
-        }
+/* Card header */
+.col h2{
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+    color:white;
+    padding:12px;
+    border-radius:10px;
+    font-size:22px;
+    text-align:center;
+    margin-bottom:20px;
+}
 
-        .approval-section .btn-approve:hover,
-        .btn:hover {
-            background-color: #3eab76;
-        }
+/* Buttons */
+.btn,
+.btn-approve{
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+    color:white;
+    padding:12px;
+    width:100%;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:0.3s;
+}
 
-        #clock {
-            text-align: center;
-            font-size: 20px;
-            margin-top: 10px;
-            color: white;
-        }
+.btn:hover,
+.btn-approve:hover{
+    transform:scale(1.05);
+    box-shadow:0 5px 20px rgba(0,0,0,0.3);
+}
 
-        #date {
-            text-align: center;
-            font-size: 18px;
-            margin-top: 5px;
-            color: white;
-        }
+/* Inputs */
+input,
+select{
+    padding:10px;
+    width:100%;
+    border:none;
+    border-radius:8px;
+    margin-top:10px;
+    background:rgba(255,255,255,0.8);
+}
 
-        #online-users {
-            text-align: center;
-            font-size: 18px;
-            margin-top: 10px;
-            color: #fff;
-        }
+/* Clock & Date */
+#clock,#date{
+    text-align:center;
+    font-size:18px;
+    margin-top:5px;
+    color:white;
+}
 
-        input,
-        button {
-            padding: 10px;
-            width: 90%;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-size: 16px;
-        }
+/* Dark mode */
+.dark-theme{
+    background:linear-gradient(120deg,#141e30,#243b55);
+}
 
-        button:hover {
-            background-color: #3a53b6;
-            color: white;
-        }
+.dark-theme .col{
+    background:rgba(0,0,0,0.5);
+}
 
-        .dark-theme {
-            background: linear-gradient(120deg, #2a2a72 0%, #009ffd 100%);
-            color: white;
-        }
-
-        .dark-theme .header {
-            background-color: #1a1a4d;
-        }
-
-        .dark-theme .col {
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-        }
-
-        /* Help Modal Styles */
-        #helpModal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.5);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-        }
-        #helpModal .modal-content {
-            background: white;
-            color: black;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 400px;
-            margin: auto;
-        }
-        #helpModal button {
-            width: auto;
-            background: #4c67db;
-            color: white;
-            border: none;
-            margin-top: 10px;
-        }
-        #helpModal button:hover {
-            background: #3eab76;
-        }
-    </style>
+.dark-theme .header{
+    background:rgba(0,0,0,0.6);
+}
+</style>
 </head>
 
 <body>
@@ -178,9 +155,7 @@
         <h1>Enhanced Face Recognition Attendance System</h1>
         <div id="clock"></div>
         <div id="date"></div>
-        <div id="online-users"></div>
-        <button type="button" onclick="toggleTheme()">Switch Theme</button>
-        <button type="button" onclick="showHelpModal()">Help</button>
+        <!-- <button type="button" onclick="toggleTheme()" style="top: 50px;right: 45%;">Switch Theme</button> -->
     </div>
 
     <div class="section">
@@ -192,15 +167,20 @@
         </div>
 
         <div class="col">
+            <!-- Inside the "Add New User" Form -->
             <form action="/add" method="POST" enctype="multipart/form-data">
                 <h2>Add New User <i class="material-icons">control_point_duplicate</i></h2>
+
                 <label><b>Enter New User Name*</b></label><br>
                 <input type="text" id="newusername" name="newusername" required /><br><br>
+
                 <label><b>Enter New User ID*</b></label><br>
                 <input type="number" id="newuserid" name="newuserid" required><br><br>
+
                 <label><b>Select Department*</b></label><br>
                 <select id="department" name="department" required>
                     <option value="">-- Select Department --</option>
+                    <option value="Artificial Intelligence and Data Science">Artificial Intelligence and Data Science</option>
                     <option value="Computer Science">Computer Science</option>
                     <option value="Electronics and Communication">Electronics and Communication</option>
                     <option value="Mechanical">Mechanical</option>
@@ -210,22 +190,15 @@
                 </select><br><br>
                 <button type="submit">Add New User</button><br><br>
             </form>
+
         </div>
 
+        
         <div class="col">
             <h2>Attendance History <i class="material-icons">history</i></h2>
             <button type="button" class="btn" onclick="goToAttendanceHistory()">
                 View History <i class="material-icons">event_note</i>
             </button>
-        </div>
-
-        <!-- New: Attendance Statistics Widget -->
-        <div class="col">
-            <h2>Today's Stats <i class="material-icons">bar_chart</i></h2>
-            <div id="attendance-stats">
-                <p>Total Present: <span id="present-count">0</span></p>
-                <p>Total Absent: <span id="absent-count">0</span></p>
-            </div>
         </div>
     </div>
 
@@ -240,20 +213,7 @@
             <button type="button" class="btn-approve" onclick="confirmAction(generateReport)">Go to Generate
                 Report</button>
         </div>
-    </div>
-
-    <!-- Help Modal -->
-    <div id="helpModal">
-        <div class="modal-content">
-            <h3>How to Use</h3>
-            <ul>
-                <li>Take attendance only when you are at the campus.</li>
-                <li>Add new users from the form.</li>
-                <li>Switch theme for better visibility.</li>
-                <li>Contact admin for approvals or issues.</li>
-            </ul>
-            <button onclick="closeHelpModal()">Close</button>
-        </div>
+        
     </div>
 
     <script>
@@ -313,57 +273,71 @@
         }
 
         function checkLocationAndPositionForAttendance() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    const kakkaveriLat = 11.4487467;
-                    const kakkaveriLng = 78.2205563;
 
-                    const distance = Math.sqrt((lat - kakkaveriLat) ** 2 + (lng - kakkaveriLng) ** 2);
-                    if (distance < 0.01) {
-                        speak("Location verified. Please sit in the correct position for the camera.");
-                        alert("Location verified. Please sit in the correct position for the camera.");
-                        window.location.href = "/start";
-                    } else {
-                        speak("You are not in Kakkaveri. Attendance not allowed.");
-                        alert("You are not in Kakkaveri!");
-                    }
-                }, () => {
-                    speak("Unable to retrieve your location.");
-                    alert("Unable to retrieve your location.");
-                });
+    if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(position => {
+
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
+
+            // Asakalathur coordinates
+            const targetLat = 11.4487467;
+            const targetLng = 78.2205563;
+
+            const radius = getDistance(userLat, userLng, targetLat, targetLng);
+
+            console.log("Distance from Kakkaveri:", radius);
+
+            // Allow within 500 meters
+            if (radius <  500000000) {
+
+                speak("Location verified. Please sit in the correct position for the camera.");
+                alert("Location verified. Please sit in the correct position for the camera.");
+
+                window.location.href = "/start";
+
             } else {
-                speak("Geolocation is not supported by this browser.");
-                alert("Geolocation is not supported by this browser.");
+
+                speak("You are not in Asakalathur. Attendance not allowed.");
+                alert("You are not in Asakalathur!");
+
             }
-        }
 
-        // Live Online Users (simulated)
-        function updateOnlineUsers() {
-            // Simulate online users (random for demo)
-            const count = Math.floor(Math.random() * 10) + 1;
-            document.getElementById('online-users').innerText = `Online Users: ${count}`;
-        }
-        setInterval(updateOnlineUsers, 3000);
-        updateOnlineUsers();
+        }, () => {
 
-        // Attendance Statistics Widget (simulated)
-        function updateAttendanceStats() {
-            // Dummy values for demo; replace with AJAX call for real data
-            document.getElementById('present-count').innerText = Math.floor(Math.random() * 30) + 20;
-            document.getElementById('absent-count').innerText = Math.floor(Math.random() * 10);
-        }
-        setInterval(updateAttendanceStats, 5000);
-        updateAttendanceStats();
+            speak("Unable to retrieve your location.");
+            alert("Unable to retrieve your location.");
 
-        // Help Modal
-        function showHelpModal() {
-            document.getElementById('helpModal').style.display = 'flex';
-        }
-        function closeHelpModal() {
-            document.getElementById('helpModal').style.display = 'none';
-        }
+        });
+
+    } else {
+
+        speak("Geolocation is not supported by this browser.");
+        alert("Geolocation is not supported by this browser.");
+
+    }
+}
+
+
+/* Haversine distance formula */
+function getDistance(lat1, lon1, lat2, lon2) {
+
+    const R = 6371; // Earth radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) *
+        Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c; // distance in km
+}
     </script>
 </body>
 

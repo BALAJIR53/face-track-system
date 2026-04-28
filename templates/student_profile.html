@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Profile</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:linear-gradient(120deg,#667eea,#764ba2);
+padding:40px;
+color:white;
+}
+
+.card{
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(10px);
+padding:25px;
+border-radius:15px;
+margin-bottom:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+h1{
+text-align:center;
+margin-bottom:30px;
+}
+
+.profile{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.stat{
+font-size:22px;
+}
+
+.progress{
+background:#ddd;
+border-radius:10px;
+height:20px;
+overflow:hidden;
+}
+
+.progress-bar{
+height:100%;
+background:#00ff9d;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th,td{
+padding:10px;
+text-align:center;
+background:rgba(255,255,255,0.1);
+}
+
+th{
+background:#4c67db;
+}
+
+button{
+margin-top:20px;
+padding:10px 20px;
+border:none;
+border-radius:8px;
+background:#00c6ff;
+color:white;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🎓 Student Profile</h1>
+
+<div class="card profile">
+    <div style="text-align:center;margin-bottom:20px;">
+
+{% if image %}
+<img src="{{ image }}" 
+style="width:150px;height:150px;border-radius:50%;object-fit:cover;border:4px solid white;">
+{% else %}
+<p>No photo available</p>
+{% endif %}
+
+</div>
+
+<div class="stat">
+<b>Name:</b> {{ name }}
+</div>
+
+<div class="stat">
+<b>Roll:</b> {{ roll }}
+</div>
+
+<div class="stat">
+<b>Department:</b> {{ dept }}
+</div>
+
+<div class="stat">
+<b>Attendance:</b> {{ percentage }}%
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Attendance Percentage</h2>
+
+<div class="progress">
+<div class="progress-bar" style="width:{{ percentage }}%"></div>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Attendance History</h2>
+
+<table>
+
+<tr>
+<th>Date</th>
+<th>Time</th>
+<th>Status</th>
+</tr>
+
+{% for r in records %}
+
+<tr>
+<td>{{ r.Date }}</td>
+<td>{{ r.Time }}</td>
+<td>{{ r.Status }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<button onclick="window.history.back()">⬅ Back</button>
+
+</body>
+</html>

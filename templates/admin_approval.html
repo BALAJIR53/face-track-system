@@ -1,246 +1,312 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin Approval</title>
-    <style>
-        /* General body styling */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fc;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Approval</title>
 
-        .container {
-            width: 80%;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+<style>
 
-        h1 {
-            text-align: center;
-            color: #007bff;
-            margin-bottom: 20px;
-        }
+body{
+font-family:Arial, sans-serif;
+background:#f4f7fc;
+margin:0;
+padding:0;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            animation: fadeIn 1s ease-out;
-        }
+/* Container */
+.container{
+width:85%;
+margin:40px auto;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 8px 25px rgba(0,0,0,0.1);
+}
 
-        th,
-        td {
-            padding: 12px 15px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
+/* Title */
+h1{
+text-align:center;
+color:#1976d2;
+margin-bottom:15px;
+}
 
-        th {
-            background-color: #007bff;
-            color: white;
-        }
+/* Table */
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
 
-        td {
-            background-color: #f9f9f9;
-        }
+th,td{
+padding:12px;
+text-align:center;
+border-bottom:1px solid #ddd;
+}
 
-        tr:hover {
-            background-color: #f1f1f1;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+th{
+background:#1976d2;
+color:white;
+}
 
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            margin-right: 10px;
-        }
+tr:hover{
+background:#f1f6ff;
+}
 
-        button:hover {
-            background-color: #218838;
-        }
+/* Buttons */
+button{
+padding:10px 18px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-size:15px;
+margin-top:10px;
+}
 
-        .reject-button {
-            background-color: #dc3545;
-        }
+.approve-btn{
+background:#28a745;
+color:white;
+}
 
-        .reject-button:hover {
-            background-color: #c82333;
-        }
+.approve-btn:hover{
+background:#218838;
+}
 
-        input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
+.reject-btn{
+background:#dc3545;
+color:white;
+}
 
-        input[type="text"] {
-            width: 90%;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
+.reject-btn:hover{
+background:#c82333;
+}
 
-        .select-all {
-            margin-bottom: 10px;
-        }
+/* Badges */
+.roll-badge{
+background:#0d6efd;
+color:white;
+padding:4px 8px;
+border-radius:5px;
+}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
+.dept-badge{
+background:#28a745;
+color:white;
+padding:4px 10px;
+border-radius:5px;
+}
 
-            to {
-                opacity: 1;
-            }
-        }
+.unknown-badge{
+background:#ffc107;
+color:black;
+padding:4px 10px;
+border-radius:5px;
+}
 
-        .message {
-            text-align: center;
-            font-size: 18px;
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 5px;
-        }
+/* Back button */
+.back-button{
+display:block;
+width:180px;
+margin:25px auto;
+background:#1976d2;
+color:white;
+padding:10px;
+border-radius:6px;
+text-align:center;
+border:none;
+cursor:pointer;
+}
 
-        .success {
-            background-color: #28a745;
-            color: white;
-        }
+.back-button:hover{
+background:#0f5ec4;
+}
 
-        .error {
-            background-color: #dc3545;
-            color: white;
-        }
+/* Flash messages */
+.message{
+padding:10px;
+text-align:center;
+border-radius:6px;
+margin-bottom:10px;
+}
 
-        .back-button {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+.success{
+background:#28a745;
+color:white;
+}
 
-        .back-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+.error{
+background:#dc3545;
+color:white;
+}
+
+/* Select all */
+.select-all{
+margin-top:10px;
+}
+
+/* Responsive */
+@media(max-width:768px){
+
+table{
+font-size:14px;
+}
+
+.container{
+width:95%;
+}
+
+}
+
+</style>
+
 </head>
 
 <body>
-    <div class="container">
-        <h1>Pending Attendance Approvals</h1>
 
-        <!-- Flash Message Display -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div>
-            {% for category, message in messages %}
-            <div class="message {{ 'success' if category == 'success' else 'error' }}">
-                {{ message }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% endwith %}
+<div class="container">
 
-        <!-- Display pending count -->
-        <p><strong>Total Pending Approvals: {{ pending_count }}</strong></p>
+<h1>Pending Attendance Approvals</h1>
 
-        <!-- Select All Option -->
-        <div class="select-all">
-            <input type="checkbox" id="selectAll" aria-label="Select all attendance records" /> Select All
-        </div>
+<!-- Flash Messages -->
 
-        <form method="POST">
-            {% if csrf_token %}
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-            {% endif %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Select</th>
-                        <th>Name</th>
-                        <th>Roll</th>
-                        <th>Department</th>
-                        <th>Time</th>
-                        <th>Last Attendance Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for record in pending_attendance %}
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="attendance[]" value="{{ record['Roll'] }}" aria-label="Select {{ record['Name'] }}" />
-                        </td>
-                        <td>{{ record['Name'] }}</td>
-                        <td>{{ record['Roll'] }}</td>
-                        <td>
-                            <input type="text" name="department_{{ record['Roll'] }}" value="{{ record['Department'] or '' }}" required />
-                        </td>
-                        <td>{{ record['Time'] }}</td>
-                        <td>{{ record['LastAttendanceTime'] }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <button type="submit" name="action" value="approve" onclick="return confirmApproval()">Approve Selected</button>
-            <button type="submit" name="action" value="reject" class="reject-button" onclick="return confirmRejection()">Reject Selected</button>
-        </form>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category,message in messages %}
 
-        <!-- Back to Home Button -->
-        <button id="backToHome" class="back-button">Back to Home</button>
-    </div>
+<div class="message {{ 'success' if category=='success' else 'error' }}">
+{{ message }}
+</div>
 
-    <script>
-        // Confirmation before approval
-        function confirmApproval() {
-            return confirm('Are you sure you want to approve the selected attendance?');
-        }
+{% endfor %}
+{% endif %}
+{% endwith %}
 
-        // Confirmation before rejection
-        function confirmRejection() {
-            return confirm('Are you sure you want to reject the selected attendance?');
-        }
+<p><b>Total Pending Approvals: {{ pending_count }}</b></p>
 
-        // Select/Deselect All checkboxes except the selectAll checkbox itself
-        document.getElementById('selectAll').addEventListener('change', function () {
-            let checkboxes = document.querySelectorAll('input[type="checkbox"][name="attendance[]"]');
-            checkboxes.forEach(function (checkbox) {
-                checkbox.checked = document.getElementById('selectAll').checked;
-            });
-        });
+<div class="select-all">
+<input type="checkbox" id="selectAll"> Select All
+</div>
 
-        // Back to Home button functionality
-        document.getElementById('backToHome').addEventListener('click', function () {
-            window.location.href = '/home'; // Change to your actual home URL
-        });
-    </script>
+<form method="POST">
+
+<table>
+
+<thead>
+<tr>
+<th>Select</th>
+<th>Name</th>
+<th>Roll</th>
+<th>Department</th>
+<th>Time</th>
+<th>Last Attendance Time</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% if pending_attendance %}
+
+{% for record in pending_attendance %}
+
+<tr>
+
+<td>
+<input type="checkbox" name="attendance[]" value="{{ record.Roll }}">
+</td>
+
+<td><strong>{{ record.Name }}</strong></td>
+
+<td>
+<span class="roll-badge">
+{{ record.Roll }}
+</span>
+</td>
+
+<td>
+
+{% if record.Department and record.Department != "Unknown" %}
+
+<span class="dept-badge">
+{{ record.Department }}
+</span>
+
+{% else %}
+
+<span class="unknown-badge">
+Unknown
+</span>
+
+{% endif %}
+
+</td>
+
+<td>{{ record.Time }}</td>
+
+<td>{{ record.LastAttendanceTime }}</td>
+
+</tr>
+
+{% endfor %}
+
+{% else %}
+
+<tr>
+<td colspan="6">No pending approvals</td>
+</tr>
+
+{% endif %}
+
+</tbody>
+
+</table>
+
+<button type="submit" name="action" value="approve" class="approve-btn" onclick="return confirmApproval()">
+Approve Selected
+</button>
+
+<button type="submit" name="action" value="reject" class="reject-btn" onclick="return confirmReject()">
+Reject Selected
+</button>
+
+</form>
+
+<button class="back-button" onclick="goHome()">Back to Home</button>
+
+</div>
+
+<script>
+
+/* Confirm dialogs */
+
+function confirmApproval(){
+return confirm("Are you sure you want to approve the selected attendance?");
+}
+
+function confirmReject(){
+return confirm("Are you sure you want to reject the selected attendance?");
+}
+
+/* Select all checkbox */
+
+document.getElementById("selectAll").addEventListener("change",function(){
+
+let checkboxes=document.querySelectorAll("input[name='attendance[]']");
+
+checkboxes.forEach(box=>{
+box.checked=this.checked;
+});
+
+});
+
+/* Back button */
+
+function goHome(){
+window.location.href="/home";
+}
+
+</script>
+
 </body>
-
 </html>

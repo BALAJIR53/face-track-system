@@ -1,102 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Attendance History</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 40px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        h2 {
-            margin-top: 40px;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<title>Smart Attendance Analytics</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#667eea,#764ba2);
+padding:30px;
+animation:fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+h1{
+text-align:center;
+color:white;
+margin-bottom:40px;
+font-size:32px;
+}
+
+.card{
+background:white;
+padding:25px;
+margin-bottom:35px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+transition:transform 0.3s ease,box-shadow 0.3s ease;
+animation:slideUp 0.8s ease;
+}
+
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 15px 35px rgba(0,0,0,0.25);
+}
+
+@keyframes slideUp{
+from{opacity:0;transform:translateY(30px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+border-radius:10px;
+overflow:hidden;
+}
+
+th,td{
+padding:12px;
+text-align:center;
+}
+
+th{
+background:linear-gradient(90deg,#11998e,#38ef7d);
+color:white;
+}
+
+tr:nth-child(even){
+background:#f8f9fa;
+}
+
+tr:hover{
+background:#e9f5ff;
+transition:0.3s;
+}
+
+.alert-row{
+background:#ffe5e5!important;
+font-weight:bold;
+}
+
+.chart-container{
+width:55%;
+margin:auto;
+}
+
+canvas{
+animation:fadeIn 1.5s ease;
+}
+
+.kpi-box{
+text-align:center;
+font-size:28px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.no-data{
+text-align:center;
+color:white;
+font-size:20px;
+}
+
+/* Student profile link style */
+
+.roll-link{
+color:#007bff;
+font-weight:bold;
+text-decoration:none;
+transition:0.3s;
+}
+
+.roll-link:hover{
+color:#ff5733;
+text-decoration:underline;
+}
+
+</style>
 </head>
+
 <body>
 
-<h1>Attendance History</h1>
+<h1>📊 Smart Attendance Analytics Dashboard</h1>
+<div style="text-align:center;margin-bottom:25px;">
+
+<input type="text" id="searchInput" 
+placeholder="Search by Name or Roll..."
+style="padding:10px;width:300px;border-radius:8px;border:none;">
+
+</div>
 
 {% if dept_records %}
-    {% for department, records in dept_records.items() %}
-    <h2>Department: {{ department }}</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Roll</th>
-                <th>Time</th>
-                <th>Last Attendance Time</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for record in records %}
-            <tr>
-                <td>{{ record.Date }}</td>
-                <td>{{ record.Name }}</td>
-                <td>{{ record.Roll }}</td>
-                <td>{{ record.Time }}</td>
-                <td>{{ record.LastAttendanceTime }}</td>
-                <td>{{ record.Status }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% endfor %}
 
-    <h2>Attendance Summary by Department</h2>
-    <canvas id="attendanceChart" width="600" height="400"></canvas>
+<!-- TABLE SECTION -->
 
-    <script>
-        const ctx = document.getElementById('attendanceChart').getContext('2d');
-        const labels = {{ chart_labels|tojson }};
-        const values = {{ chart_values|tojson }};
+{% for department, records in dept_records.items() %}
+<div class="card">
 
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'Number of Present Students',
-                data: values,
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        };
+<h2>Department: {{ department }}</h2>
 
-        const config = {
-            type: 'bar',
-            data: data,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        precision: 0
-                    }
-                }
-            }
-        };
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Name</th>
+<th>Roll</th>
+<th>Time</th>
+<th>Last Attendance</th>
+<th>Status</th>
+</tr>
+</thead>
 
-        new Chart(ctx, config);
-    </script>
+<tbody>
+
+{% for record in records %}
+<tr>
+
+<td>{{ record.Date }}</td>
+<td>{{ record.Name }}</td>
+
+<td>
+<a class="roll-link" href="/student/{{ record.Roll }}">
+{{ record.Roll }}
+</a>
+</td>
+
+<td>{{ record.Time }}</td>
+<td>{{ record.LastAttendanceTime }}</td>
+<td>{{ record.Status }}</td>
+
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+{% endfor %}
+
+<!-- BAR CHART -->
+
+<div class="card chart-container">
+<h2>📊 Department-wise Present Count</h2>
+<canvas id="barChart"></canvas>
+</div>
+
+<script>
+
+const barLabels=[
+{% for label in chart_labels %}
+"{{ label }}",
+{% endfor %}
+];
+
+const barValues=[
+{% for value in chart_values %}
+{{ value }},
+{% endfor %}
+];
+
+new Chart(document.getElementById('barChart'),{
+type:'bar',
+data:{
+labels:barLabels,
+datasets:[{
+label:'Present Students',
+data:barValues,
+backgroundColor:'#4CAF50'
+}]
+},
+options:{
+scales:{y:{beginAtZero:true}}
+}
+});
+
+</script>
+
+<!-- PIE CHART -->
+
+<div class="card chart-container">
+<h2>🥧 Present vs Absent Ratio</h2>
+<canvas id="pieChart"></canvas>
+</div>
+
+<script>
+
+new Chart(document.getElementById('pieChart'),{
+type:'pie',
+data:{
+labels:["Present","Absent"],
+datasets:[{
+data:[{{ present_count }},{{ absent_count }}],
+backgroundColor:["#28a745","#dc3545"]
+}]
+}
+});
+
+</script>
+
+<!-- MONTHLY TREND -->
+
+<div class="card chart-container">
+<h2>📈 Monthly Attendance Trend</h2>
+<canvas id="lineChart"></canvas>
+</div>
+
+<script>
+
+const monthLabels=[
+{% for m in monthly_labels %}
+"{{ m }}",
+{% endfor %}
+];
+
+const monthValues=[
+{% for v in monthly_values %}
+{{ v }},
+{% endfor %}
+];
+
+new Chart(document.getElementById('lineChart'),{
+type:'line',
+data:{
+labels:monthLabels,
+datasets:[{
+label:"Monthly Present Count",
+data:monthValues,
+borderColor:"#007bff",
+fill:false,
+tension:0.3
+}]
+}
+});
+
+</script>
+
+<!-- LOW ATTENDANCE ALERT -->
+
+<div class="card">
+
+<h2>🚨 Low Attendance Alert (Below 75%)</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Roll</th>
+<th>Attendance Percentage</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% if low_attendance %}
+
+{% for student in low_attendance %}
+
+<tr class="alert-row">
+
+<td>
+<a class="roll-link" href="/student/{{ student.Roll }}">
+{{ student.Roll }}
+</a>
+</td>
+
+<td>{{ "%.2f"|format(student.AttendancePercentage) }}%</td>
+
+</tr>
+
+{% endfor %}
 
 {% else %}
-    <p>No attendance records found.</p>
+
+<tr>
+<td colspan="2">No students below 75% attendance 🎉</td>
+</tr>
+
 {% endif %}
-<p>Labels: {{ chart_labels }}</p>
-<p>Values: {{ chart_values }}</p>
 
+</tbody>
 
+</table>
+
+</div>
+
+{% else %}
+
+<div class="no-data">
+No attendance records found.
+</div>
+
+{% endif %}
+<script>
+
+document.getElementById("searchInput").addEventListener("keyup", function() {
+
+let filter = this.value.toUpperCase();
+let rows = document.querySelectorAll("tbody tr");
+
+rows.forEach(function(row){
+
+let name = row.children[1].textContent.toUpperCase();
+let roll = row.children[2].textContent.toUpperCase();
+
+if(name.includes(filter) || roll.includes(filter)){
+row.style.display="";
+}
+else{
+row.style.display="none";
+}
+
+});
+
+});
+
+</script>
 </body>
 </html>
